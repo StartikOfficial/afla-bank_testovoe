@@ -42,6 +42,9 @@
     .liked {
         @apply bg-[#FB651E] duration-500
     }
+    .deleted {
+        @apply hidden
+    }
   }
 
   .liked:before {

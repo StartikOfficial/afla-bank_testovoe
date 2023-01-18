@@ -23,11 +23,18 @@ export default function MainPage() {
         list.contains("liked") ? e.target.lastChild.data = (likes += 1) : e.target.lastChild.data = (likes -= 1);
     }
 
-    const [filteredByLikes, setFilteredByLikes] = useState([]);
-    useEffect(() => {
-        setFilteredByLikes(document.getElementsByClassName("liked"));
-        console.log(filteredByLikes);
-    }, []);
+    const deleteCard = e => {
+        console.log(e);
+        e.target.parentElement.classList.add("hidden");
+        e.target.parentElement.classList.add("deleted");
+    }
+
+    const filterLiked = () => {
+        const cardsList = document.getElementById("cards-list").children;
+        for (let i=0; i < cardsList.length; i++) {
+            if (!cardsList[i].children[0].children[1].classList.contains("liked") && !cardsList[i].classList.contains("deleted")) cardsList[i].classList.toggle("hidden");
+        }
+    }
     
     // Стейты для кнопки
     // const [disableButton, setDisableButton] = useState(false);
@@ -55,8 +62,8 @@ export default function MainPage() {
         {/* <button onMouseEnter={() => setShowText(true)} onMouseLeave={() => setShowText(false)} disabled={disableButton} className="select-none opacity-50 hover:opacity-100 z-10 drop-shadow-lg fixed bottom-0 right-0 h-28 w-28 mx-8 my-16 leading-4 text-[#fb6357] md:mx-8 md:my-24 md:h-56 md:w-56 md:text-4xl bg-[#4e3038] rounded-3xl font-bold"
         onClick={async () => {setDisableButton(true); dispatch(getNewItems()); setDisableButton(false)}}>{loadingItemsState ? <span>
             загрузка...</span> : <span className="text-[#fb6357] p-0">{showText ? "обновить?" : `Новости обновятся через: ${timeLeft}`}</span>}</button> */}
-        <label for="filter">Отфильтровать по лайкам</label><input name="filter" type={"checkbox"} onChange={() => console.log("change")}/>
-        <ul className="flex flex-col items-center md:max-w-5/6 w-4/5 m-auto">
+        <label for="filter">Отфильтровать по лайкам</label><input name="filter" id="filter" type={"checkbox"} onChange={() => filterLiked()}/>
+        <ul className="flex flex-col items-center md:max-w-5/6 w-4/5 m-auto" id="cards-list">
             {loadingItemsState ? 
             <svg className="animate-spin fixed left-50" fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="100px" height="100px" viewBox="0 0 26.349 26.35" 
@@ -78,7 +85,7 @@ export default function MainPage() {
                     <svg className="w-6 h-6 bg-inherit pointer-events-none" fill="white" width="512px" height="512px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><title>ionicons-v5-q</title><path className="pointer-events-none" d="M464,464H48a16,16,0,0,1-14.07-23.62l208-384a16,16,0,0,1,28.14,0l208,384A16,16,0,0,1,464,464Z"/></svg>
                     {el?.score}
                 </div>
-                <svg className="h-16 min-h-16 w-20 max-w-20 min-w-20 bg-inherit" xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 24 24"><path d="M22,5H17V2a1,1,0,0,0-1-1H8A1,1,0,0,0,7,2V5H2A1,1,0,0,0,2,7H3.061L4,22.063A1,1,0,0,0,5,23H19a1,1,0,0,0,1-.937L20.939,7H22a1,1,0,0,0,0-2ZM9,3h6V5H9Zm9.061,18H5.939L5.064,7H18.936ZM9,11v6a1,1,0,0,1-2,0V11a1,1,0,0,1,2,0Zm4,0v6a1,1,0,0,1-2,0V11a1,1,0,0,1,2,0Zm3-1a1,1,0,0,1,1,1v6a1,1,0,0,1-2,0V11A1,1,0,0,1,16,10Z"/></svg>
+                <svg onClick={e => deleteCard(e)} className=" ml-6 h-16 min-h-16 w-20 max-w-20 min-w-20 bg-inherit" xmlns="http://www.w3.org/2000/svg" fill="#000000" width="800px" height="800px" viewBox="0 0 24 24"><path className="pointer-events-none" d="M22,5H17V2a1,1,0,0,0-1-1H8A1,1,0,0,0,7,2V5H2A1,1,0,0,0,2,7H3.061L4,22.063A1,1,0,0,0,5,23H19a1,1,0,0,0,1-.937L20.939,7H22a1,1,0,0,0,0-2ZM9,3h6V5H9Zm9.061,18H5.939L5.064,7H18.936ZM9,11v6a1,1,0,0,1-2,0V11a1,1,0,0,1,2,0Zm4,0v6a1,1,0,0,1-2,0V11a1,1,0,0,1,2,0Zm3-1a1,1,0,0,1,1,1v6a1,1,0,0,1-2,0V11A1,1,0,0,1,16,10Z"/></svg>
             </li>
             </div>
             )}
