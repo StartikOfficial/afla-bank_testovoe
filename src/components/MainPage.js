@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { selectItems, getNewItems, selectLoadingState } from "../slices/storiesDataSlice";
 import { unixToDate } from "../utils/unixToDate";
@@ -24,7 +24,6 @@ export default function MainPage() {
     }
 
     const deleteCard = e => {
-        console.log(e);
         e.target.parentElement.classList.add("hidden");
         e.target.parentElement.classList.add("deleted");
     }
@@ -54,7 +53,10 @@ export default function MainPage() {
     //   }, [timeLeft, loadingItemsState]);
 
       // устранение бага, когда на первом месте массива появляется null, undefined
-      (!items[0]) && dispatch(getNewItems());
+      useEffect(() => {
+        (!items[0]) && dispatch(getNewItems());
+      }, [items, dispatch]);
+      
 
     return (
         <>
@@ -62,7 +64,7 @@ export default function MainPage() {
         {/* <button onMouseEnter={() => setShowText(true)} onMouseLeave={() => setShowText(false)} disabled={disableButton} className="select-none opacity-50 hover:opacity-100 z-10 drop-shadow-lg fixed bottom-0 right-0 h-28 w-28 mx-8 my-16 leading-4 text-[#fb6357] md:mx-8 md:my-24 md:h-56 md:w-56 md:text-4xl bg-[#4e3038] rounded-3xl font-bold"
         onClick={async () => {setDisableButton(true); dispatch(getNewItems()); setDisableButton(false)}}>{loadingItemsState ? <span>
             загрузка...</span> : <span className="text-[#fb6357] p-0">{showText ? "обновить?" : `Новости обновятся через: ${timeLeft}`}</span>}</button> */}
-        <label for="filter">Отфильтровать по лайкам</label><input name="filter" id="filter" type={"checkbox"} onChange={() => filterLiked()}/>
+        <label htmlFor="filter">Отфильтровать по лайкам</label><input name="filter" id="filter" type={"checkbox"} onChange={() => filterLiked()}/>
         <ul className="flex flex-col items-center md:max-w-5/6 w-4/5 m-auto" id="cards-list">
             {loadingItemsState ? 
             <svg className="animate-spin fixed left-50" fill="white" version="1.1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

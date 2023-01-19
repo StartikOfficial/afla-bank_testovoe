@@ -1,7 +1,8 @@
 {
   "short_name": "Альфа-Банк тестовое",
   "name": "Тестовое задание",
-  "start_url": ".",
+  "start_url": "./alfa-bank_testovoe",
+  "scope": "alfa-bank_testovoe",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
